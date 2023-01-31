@@ -36,63 +36,52 @@ const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {
   const [search, setSearch] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const [query, setQuery] = useState<any>({
     pageNumber: 1,
     limit: 30,
     search: "random",
   });
-  
+
   const { data = [], isFetching, error } = useSearchImagesQuery(query);
 
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View Profile
-      </a>
-    ),
-  },
-  {
-    key: "2",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Stats
-      </a>
-    ),
-  },
-  {
-    key: "3",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Account Settings
-      </a>
-    ),
-  },
-  {
-    type: "divider",
-  },
-  {
-    key: "4",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Logout
-      </a>
-    ),
-  },
-];
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <a target="_blank" rel="noopener noreferrer">
+          View Profile
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a target="_blank" rel="noopener noreferrer">
+          Stats
+        </a>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <a target="_blank" rel="noopener noreferrer">
+          Account Settings
+        </a>
+      ),
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "4",
+      label: (
+        <a target="_blank" rel="noopener noreferrer">
+          Logout
+        </a>
+      ),
+    },
+  ];
 
   const menuItems: MenuItem[] = [
     getItem("Editorial", "1"),
@@ -202,8 +191,8 @@ const items: MenuProps["items"] = [
     {
       key: "21",
       label: "Arts & Culture",
-    }
-  ]
+    },
+  ];
 
   function handleMenuChange(selectedKey: string) {
     const item = itemsMenu.find(({ key }) => key === selectedKey);
@@ -212,9 +201,12 @@ const items: MenuProps["items"] = [
       limit: 30,
       search: item?.label,
     });
-    setSearch("");
+    if (item?.label) {
+      setSearch(item.label);
+    } else {
+      setSearch("");
+    }
   }
-
 
   return (
     <>
@@ -241,6 +233,7 @@ const items: MenuProps["items"] = [
                     search: "random",
                   });
                   setSearch("");
+                  setPage(1);
                 }}
               />
             </div>
@@ -249,13 +242,14 @@ const items: MenuProps["items"] = [
                 placeholder="Search"
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
-                onPressEnter={() =>
+                onPressEnter={() => {
                   setQuery({
                     pageNumber: 1,
                     limit: 30,
                     search: search,
-                  })
-                }
+                  });
+                  setPage(1);
+                }}
               />
             </div>
             <div className="menu-button">
@@ -284,7 +278,6 @@ const items: MenuProps["items"] = [
               >
                 <UserOutlined style={{ margin: "10px", cursor: "pointer" }} />
               </Dropdown>
-              {/* <MenuOutlined style={{ margin: "10px", cursor: "pointer" }} /> */}
             </div>
           </Space>
           <br />
@@ -297,7 +290,7 @@ const items: MenuProps["items"] = [
             className="menu-nav"
           />
         </Header>
-        <Content style={{ padding: "0 50px",zIndex:0, paddingTop:"10em" }}>
+        <Content style={{ padding: "0 50px", zIndex: 0, paddingTop: "10em" }}>
           <div>
             <Spin spinning={isFetching} className="loading" />
             <div hidden={isFetching} className="gallery">
@@ -355,7 +348,7 @@ const items: MenuProps["items"] = [
             </div>
           </div>
           <Pagination
-            defaultCurrent={1}
+            defaultCurrent={page}
             total={data?.total_pages}
             onChange={(page: number) => {
               setQuery({
@@ -363,6 +356,7 @@ const items: MenuProps["items"] = [
                 limit: 30,
                 search: search,
               });
+              setPage(page);
             }}
           />
         </Content>
