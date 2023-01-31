@@ -212,13 +212,8 @@ const App: React.FC = () => {
     <>
       <Layout className="layout">
         <Header
-          style={{
-            position: "fixed",
-            width: "100%",
-            backgroundColor: "white",
-            height: "auto",
-            zIndex: 1,
-          }}
+          className="header"
+          style={{ backgroundColor: "white", height: "100px" }}
         >
           <Space size="large" align="center">
             <div>
