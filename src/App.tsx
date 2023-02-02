@@ -301,14 +301,14 @@ const App: React.FC = () => {
                     <div className="image__overlay">
                       <Space size="small">
                         <a
-                          href={`${item.user.links.self}?client_id=${UNSPLASH_API_KEY}`}
+                          href={`https://unsplash.com/@${item.user.username}`}
                           target="_blank"
                           className="image__user_name"
                         >
                           {item.user.name}
                         </a>
                         <a
-                          href={item.user.links.self}
+                          href={`https://unsplash.com/@${item.user.username}`}
                           target="_blank"
                           className="image__user_pfp"
                         >
